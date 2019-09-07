@@ -1,0 +1,308 @@
+\documentclass[11pt, a4paper]{article}
+    %\usepackage{geometry}
+    \usepackage[inner=1.5cm,outer=1.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+    \pagestyle{empty}
+    \usepackage{graphicx}
+    \usepackage{fancyhdr, lastpage, bbding, pmboxdraw}
+    \usepackage[usenames,dvipsnames]{color}
+    \usepackage{multicol}
+    \definecolor{darkblue}{rgb}{0,0,.6}
+    \definecolor{darkred}{rgb}{.7,0,0}
+    \definecolor{darkgreen}{rgb}{0,.6,0}
+    \definecolor{red}{rgb}{.98,0,0}
+    \usepackage[colorlinks,pagebackref,pdfusetitle,urlcolor=darkblue,citecolor=darkblue,linkcolor=darkred,bookmarksnumbered,plainpages=false]{hyperref}
+    \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+    
+    \pagestyle{fancyplain}
+    \fancyhf{}
+    % TODO: Change the team name here
+    \lhead{ \fancyplain{}{Mushroom Research and Development} }
+    \rhead{ \fancyplain{}{CSCI 470/575 - Project Proposal} }
+    %\rfoot{\fancyplain{}{page \thepage\ of \pageref{LastPage}}}
+    % \fancyfoot[RO, LE] {page \thepage\ of \pageref{LastPage} }
+    \thispagestyle{plain}
+    
+    %%%%%%%%%%%% LISTING %%%
+    \usepackage{listings}
+    \usepackage{caption}
+    \DeclareCaptionFont{white}{\color{white}}
+    \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+    \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+    \usepackage{verbatim} % used to display code
+    \usepackage{fancyvrb}
+    \usepackage{acronym}
+    \usepackage{amsthm}
+    \VerbatimFootnotes % Required, otherwise verbatim does not work in footnotes!
+    
+    \usepackage{booktabs}
+    
+    \definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
+    \definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
+    \definecolor{lightlightgray}{gray}{0.93}
+    
+    
+    
+    \lstset{
+    %language=bash,                          % Code langugage
+    basicstyle=\ttfamily,                   % Code font, Examples: \footnotesize, \ttfamily
+    keywordstyle=\color{OliveGreen},        % Keywords font ('*' = uppercase)
+    commentstyle=\color{gray},              % Comments font
+    numbers=left,                           % Line nums position
+    numberstyle=\tiny,                      % Line-numbers fonts
+    stepnumber=1,                           % Step between two line-numbers
+    numbersep=5pt,                          % How far are line-numbers from code
+    backgroundcolor=\color{lightlightgray}, % Choose background color
+    frame=none,                             % A frame around the code
+    tabsize=2,                              % Default tab size
+    captionpos=t,                           % Caption-position = bottom
+    breaklines=true,                        % Automatic line breaking?
+    breakatwhitespace=false,                % Automatic breaks only at whitespace?
+    showspaces=false,                       % Dont make spaces visible
+    showtabs=false,                         % Dont make tabls visible
+    columns=flexible,                       % Column format
+    morekeywords={__global__, __device__},  % CUDA specific keywords
+    }
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \renewcommand{\labelenumii}{\theenumii}
+    \renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+
+    \begin{document}
+
+    \begin{titlepage}
+        \begin{center}
+            \vspace*{2in}
+            {\Large \textsc{Project Proposal}}\\
+            \vspace*{0.1in}
+            CSCI 470/575: Introduction to Machine Learning\\
+            \vspace*{0.1in}
+            \date{\today}
+            
+            \vspace*{3in}
+            % TODO: Update your team name and team members
+            \large{\textbf{Mushroom Research and Development}} \\
+            \vspace*{0.1in}
+            % Sort by alphabetical order of last names
+            \large{Taqi Alyousuf} \\
+            \vspace*{0.1in}
+            \large{Arthur Clement} \\
+            \vspace*{0.1in}
+            \large{Madeline McKune} \\
+            \vspace*{0.1in}
+            \large{Austin Oltmanns} \\
+            \vspace*{0.1in}
+            \large{Anna Titova} \\
+        \end{center}
+    \end{titlepage}
+    
+    % Applied Project Template
+    \section*{Applied Project}
+    \vskip.15in
+    % TODO: Select Preference level
+    \noindent\textbf{Preference:} High% Present 1 project of each preference, 
+    \vskip.15in
+    % TODO: Specify topic area
+    \noindent\textbf{Topic Area:} Salt identification in geolocial images.
+    \vskip.15in
+    % TODO: Brief project title
+    \noindent\textbf{Project Name:} TGS Salt Identification Challenge
+
+    \vskip.15in
+    % TODO: Mention the problem and motivation to solve it
+    \noindent\textbf{Problem Statement:} Kaggle description: “Several areas of Earth with large accumulations of oil and gas also have huge deposits of salt below the surface. Unfortunately, knowing where large salt deposits are precisely is very difficult. Professional seismic imaging still requires expert human interpretation of salt bodies. This leads to very subjective, highly variable renderings. More alarmingly, it leads to potentially dangerous situations for oil and gas company
+drillers. To create the most accurate seismic images and 3D renderings, TGS (the worlds leading geoscience data company) is hoping Kaggles machine learning community will be able to build an algorithm that automatically and accurately identifies if a subsurface target is a salt body or not.”
+
+
+    \vskip.15in
+    % TODO: Mention the solution overview
+    % TODO: Mention areas of machine learning that will be utilized
+    % TODO: Mention why this can't be done with traditional programming or why a machine learning approach is better
+    % TODO: Mention input/output expectation, what are the inputs to your project and the expected outputs "Our project takes X and produces Y"
+    \noindent\textbf{Proposed Solution:} To develop our solution, we will first survey existing solutions to this problem. After analyzing existing solutions, we plan on utilizing the information learned in order to develop our own solution. This will consist of finding the best way to transform the input data (possibly no transformation) before applying a machine learning process which has parameters that can be trained to the given data to produce an output that may also be transformed to produce a final output. Because this dataset is so large and varied, a traditional signal processing/programming approach may fall short due to variations in the data and the range of potential inputs. For this reason, machine learning techniques will provide an advantage as they are able to learn how to respond to such wide and varied inputs. 
+
+Based on initial reasearch, some items we may investigate include various ML algorithms using supervised and/or unsupervised learning. Supervised learning includes Convolutional Neural Networks (CNN) and Feedforward networks (FFN) with multiple hidden layers. The role of unsupervised learning such as K-mean clustering will be investigated. A combination of supervised and unsupervised could provide more value by means of deep belief networks. Our approach could extend to test different data attributes that could reveal extra features. 
+
+We will explore the use of CNN to identify salt from sediment before we design our model because CNNs are classically used for image classification problems. Identifying salt from sediment takes a trained eye and cannot be identified easily by the average human. By using Machine Learning, we will be able to compensate for these properties of the data which would not be as readily possible using traditional techniques.
+
+Our project will take in a 101x101 pixel, geographic image and we will produce a mask that classifies each pixel as either salt (white) or sediment (black). The performance of the developed solutions will be evaluated by developing a confusion matrix for each solution. Accuracy metrics will then be used to ascertain the best solution.
+
+
+
+
+    \vskip.15in
+    % TODO: Mention the dataset you plan on using or kinds of data you will search for. if you've found data, provide urls to the data
+    \noindent\textbf{Data:} The data will be collected from the TGS challenge from Kaggle. The data includes a train and test folder, and a file with the depth each image was taken at. Inside the train folder, there are approximately 8,000 raw geographic images and their corresponding masks. A mask has sediment regions as black and salt as white. The test folder has approximately 18,000 raw geographic images and the model must learn the mask. 
+Data provided by \url{https://www.kaggle.com/c/tgs-salt-identification-challenge/data}.
+
+        
+    \pagebreak
+
+    % Applied Project Template
+    \section*{Applied Project}
+    \vskip.15in
+    % TODO: Select Preference level
+    \noindent\textbf{Preference:} Low% Present 1 project of each preference, 
+    \vskip.15in
+    % TODO: Specify topic area
+    \noindent\textbf{Topic Area:}  Classification
+    \vskip.15in
+    % TODO: Brief project title
+    \noindent\textbf{Project Name:} Mushroom Toxicity Estimator (MTE)
+
+    \vskip.15in
+    % TODO: Mention the problem and motivation to solve it
+    \noindent\textbf{Problem Statement:} Identifying mushrooms requires an understanding of fungi and their macroscopic structure. Given a dataset of 23 species of mushrooms, identify each as definitely edible (e), definitely poisonous (p), or unknown, from their attribute information. 
+
+    \vskip.15in
+    % TODO: Mention the solution overview
+    % TODO: Mention areas of machine learning that will be utilized
+    % TODO: Mention why this can't be done with traditional programming or why a machine learning approach is better
+    % TODO: Mention input/output expectation, what are the inputs to your project and the expected outputs "Our project takes X and produces Y"
+    \noindent\textbf{Proposed Solution:} We will first analyze two previously proven models for this dataset so that we will have a better understanding of the problem. We will either build upon our understanding of the model so that we can improve their solution or build our own model so that we can outperform their results. We plan to use Logical Regression because the algorithm best predicts the relationship between two variables from data. 
+Logical regression will be applied to determine whether a mushroom type is poisonous or edible.
+The information for a single mushroom contains 23 columns of attributes and multiple classifications for each attribute. For example, the “stalk-root” for a mushroom can be “bulbous=b, club=c, cup=u, equal=e, rhizomorphs=z, rooted=r, missing=?”. No human would be able to memorize every combination of attributes that corresponds to a poisonous or edible mushroom. Nor, predict which attributes are important for poisonous or edible groups. By using Machine Learning, this process is ameliorated because the model learns which attributes are important for each classification and can predict the toxicity for a given mushroom. 
+We will take a table of 23 attributes (cap-shape, veil-type, etc.) and a classification for each attribute (broad, narrow, brown, etc.) and classify the mushroom as poisonous (p) or edible (e).
+
+    
+
+    \vskip.15in
+    % TODO: Mention the dataset you plan on using or kinds of data you will search for. if you've found data, provide urls to the data
+    \noindent\textbf{Data:} The data will be collected from the Mushroom Classification challenge from Kaggle. The dataset includes a “mushrooms.csv” file which is a table of mushrooms by attributes. There are 23 columns of attributes that describe a feature of the mushroom. 
+\url{https://www.kaggle.com/uciml/mushroom-classification}
+    \pagebreak
+%
+%    % Theory-based Project Template
+%    \section*{Theory Project}
+%    \vskip.15in
+%    % TODO: Select Preference level
+%    \noindent\textbf{Preference:} High / Low % Present 1 project of each preference
+%    \vskip.15in
+%    % TODO: Specify paper title
+%    \noindent\textbf{Paper Title:} Amet cupidatat aute do minim mollit commodo laborum irure eu.
+%    \vskip.15in
+%    % TODO: Specify the paper's authors
+%    \noindent\textbf{Paper Authors:} Tempor tempor minim nostrud aliquip esse id sit aute do duis culpa est in.
+%    \vskip.15in
+%    % TODO: Specify the conference in which the paper was published
+%    \noindent\textbf{Conference:} NeurIPS 2017 % Conference, Year
+%    \vskip.15in
+%    % TODO: Mention the research areas related to the paper and describe your understanding of each
+%    \noindent\textbf{Research Area(s):} Et cupidatat laborum nulla labore est cupidatat consectetur velit laborum est magna proident cupidatat velit. Sit et sit deserunt dolor commodo nostrud reprehenderit velit elit sint. Veniam ex proident labore velit eiusmod ullamco incididunt ad nisi commodo elit amet. Excepteur ullamco incididunt sit cillum Lorem occaecat magna.
+
+%    Ut nulla dolore esse labore cillum incididunt occaecat enim velit sunt sint enim dolore. Lorem anim occaecat consectetur ea proident nisi ullamco eiusmod sint. Incididunt irure consectetur sit eiusmod ea deserunt dolor velit veniam.
+
+
+%    \vskip.15in
+%    % TODO: Mention the dataset you plan on using or kinds of data you will search for. If you've found data, provide urls to the data
+%    \noindent\textbf{Data:} Consequat cillum reprehenderit mollit ullamco Lorem ex pariatur laboris consectetur commodo velit consectetur ipsum ut. Data provided by \url{https://example.com/}
+
+%    \vskip.15in
+%    % TODO: Mention the dataset you plan on using or kinds of data you will search for
+%    \noindent\textbf{Experiment:} Laboris mollit do aliqua labore sit ipsum fugiat laborum cillum Lorem anim reprehenderit laboris. Laborum nisi eiusmod aute et officia ex occaecat ex mollit est ut aliqua ullamco. Quis irure laboris in laborum proident. Nisi irure ipsum nisi ipsum amet cillum. Consequat occaecat ut ad labore magna id excepteur excepteur officia labore fugiat sunt mollit. Magna eiusmod ullamco do eiusmod commodo sunt laborum ullamco enim ullamco aliqua. Id cillum voluptate non aliqua magna sunt.%
+%
+%    In mollit eiusmod aliqua minim cupidatat consequat fugiat excepteur Lorem labore in. Aute nulla sunt sit cupidatat minim. Nisi do dolor ullamco enim deserunt voluptate veniam. Sunt aliquip fugiat voluptate id exercitation aliquip ex ipsum. Id nisi commodo cillum veniam reprehenderit. Cillum nostrud aute incididunt ullamco sint esse dolor elit sit id reprehenderit duis et sunt.%
+
+%    \pagebreak
+
+    
+    % Describe the proposed timeline and individual task assignment
+    \section*{Timeline}
+    
+    % TODO: Define the WBS for your project
+    % TODO: Add initials of assigned team members at the end of level 2 tasks
+    \vskip.15in \textbf{Work Breakdown Structure (WBS)}
+
+    \begin{multicols}{3}
+        \begin{enumerate}
+            \item Project Proposal
+            \begin{enumerate}
+                \item Task outline (TA)
+                \item Project 1 solution description (CA)
+                \item Project finding (MM)
+                \item Project 2 solution description (AO)
+                \item Final assembly of proposal (AT)
+            \end{enumerate}
+            \item Analyzing existing algorithms
+            \begin{enumerate}
+                \item Investigate existing algorithms (TA)
+                \item Implement solution 1 (CA)
+                \item Implement solution 1 (MM)
+                \item Implement solution 2 (AO)
+                \item Implement solution 2 (AT)
+            \end{enumerate}
+           \item Outline our own method
+            \begin{enumerate}
+                \item Define algorithm steps (TA)
+                \item define step 1 (CA)
+                \item define step 2 (MM)
+                \item define steps 3, 4 (AO)
+                \item Analyze proposed solution (AT)
+            \end{enumerate}
+            \item Our own method generates results
+            \begin{enumerate}
+                \item Implement step 1 (TA)
+                \item Implement step 2 (CA)
+                \item Implement step 3 (MM)
+                \item Implement step 4 (AO)
+                \item Test and validate (AT)
+            \end{enumerate}
+            \item Our own method works acceptably
+            \begin{enumerate}
+                \item Refine step 1 (TA)
+                \item Refine step 2 (CA)
+                \item Refine step 3 (MM)
+                \item Refine step 4 (AO)
+                \item Test and validate further (AT)
+            \end{enumerate}
+            \item Outline presentation
+            \begin{enumerate}
+                \item Introduction (TA)
+                \item Method (CA)
+                \item Method (MM)
+                \item Conclusion (AO)
+                \item Further work (AT)
+            \end{enumerate}
+            \item Draft presentation
+            \begin{enumerate}
+                \item Introduction (TA)
+                \item Method (CA)
+                \item Method (MM)
+                \item Conclusion (AO)
+                \item Further work (AT)
+            \end{enumerate}
+            \item Presentation
+            \begin{enumerate}
+                \item Introduction (TA)
+                \item Method (CA)
+                \item Method (MM)
+                \item Conclusion (AO)
+                \item Further work (AT)
+            \end{enumerate}
+        \end{enumerate}
+    \end{multicols}
+
+    
+    \textbf{Critical Path}
+    % TODO: Create a project plan with estimated completion dates for each task
+    % TODO: Determine the critical path and outline it below
+    The critical path of the project with expected completion dates of each task is
+    \begin{itemize}
+        \item 1.0 Project Proposal (ALL) - (09/06/19)
+        \item 2.0 Analyzing existing algorithms (ALL) (9/23/19)
+        \item 3.0 Outline our own algorithm (ALL) (10/10/19)
+        \item 4.0 Our own method generates results (ALL) (10/21/19)
+        \item 5.0 Our own method works acceptably (ALL) (11/04/19)
+        \item 6.0 Outline presentation (ALL) (11/11/19)
+        \item 7.0 Draft of presentation (ALL) (11/18/19)
+        \item 8.0 Presentation (ALL) (12/05/19)
+        
+    \end{itemize}
+
+
+        
+
+    \pagebreak
+        
+        %%%%%% THE END 
+    \end{document} 
