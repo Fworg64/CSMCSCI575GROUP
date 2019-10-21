@@ -3,3 +3,7 @@
 *.aux
 
 *.pdf
+*.idea
+*__pychache__*
+*.pyc
+
