@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 window = Tk()
 
 window.title("Mushroom ML GUI")
-window.geometry("600x200")
+window.geometry("600x600")
 window.configure(background="light green")
 
 filename = ""
@@ -30,31 +30,48 @@ def runFFN():
 
 
 def browsefunc():
-    name = tkFileDialog.askopenfilename(filetypes=[("JPG FILES", "*.jpg")])
+    name = tkFileDialog.askopenfilename(
+        filetypes=[("JPG FILES", "*.jpg"), ("PNG FILES", "*.png")]
+    )
     set_filename(name)
     file_field.insert(0, name)
-    img = ImageTk.PhotoImage(Image.open(filename).resize((100, 100), Image.ANTIALIAS))
+    img = ImageTk.PhotoImage(Image.open(filename).resize((200, 200), Image.ANTIALIAS))
     panel = Label(window, image=img)
-    panel.config(height=100, width=100)
+    panel.config(height=200, width=200)
     panel.photo = img
-    panel.grid(column=0, row=3)
+    panel.place(x=50, y=60, height=200, width=200)
     return
 
 
+# create labels for photos
+Input = Label(window, text="Input File", bg="light green")
+Input.place(x=120, y=20)
+Input = Label(window, text="Generated Mask", bg="light green")
+Input.place(x=400, y=20)
+
 # create Upload File Section
 file = Label(window, text="File", bg="light green")
-file.grid(row=1, column=0)
+file.place(x=20, y=300)
 file_field = Entry(window)
-file_field.grid(row=1, column=1, ipadx="100")
+file_field.place(x=70, y=300, width=400)
 browsebutton = Button(window, text="Browse", command=browsefunc)
-browsebutton.grid(column=2, row=1)
+browsebutton.place(x=500, y=300)
 
 # create choose algorithm Section
 algorithm = Label(window, text="Algorithm", bg="light green")
-algorithm.grid(column=0, row=2)
+algorithm.place(x=20, y=400)
 cnn_btn = Button(window, text="CNN", bg="black", command=runCNN)
-cnn_btn.grid(column=1, row=2)
+cnn_btn.place(x=150, y=400, width=120, height=25)
 ffn_btn = Button(window, text="FFN", bg="black", command=runFFN)
-ffn_btn.grid(column=2, row=2)
+ffn_btn.place(x=350, y=400, width=120, height=25)
+
+# display team logo
+mushroom_img = ImageTk.PhotoImage(
+    Image.open("./mushroom.jpg").resize((50, 50), Image.ANTIALIAS)
+)
+logo = Label(window, image=mushroom_img)
+logo.config(height=50, width=50)
+logo.photo = mushroom_img
+logo.place(x=0, y=550, height=50, width=50)
 
 window.mainloop()
