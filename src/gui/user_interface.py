@@ -35,7 +35,8 @@ def browsefunc():
     )
     set_filename(name)
     file_field.insert(0, name)
-    img = ImageTk.PhotoImage(Image.open(filename).resize((200, 200), Image.ANTIALIAS))
+    img = ImageTk.PhotoImage(Image.open(
+        filename).resize((200, 200), Image.ANTIALIAS))
     panel = Label(window, image=img)
     panel.config(height=200, width=200)
     panel.photo = img
