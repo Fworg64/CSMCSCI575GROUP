@@ -1,7 +1,16 @@
-from keras.models import load_model
-from .main import load_image
+#import tensorflow.keras as keras
+from tensorflow.keras.models import load_model
+from image_loader import load_image
+import os
+import numpy as np
+import cv2
 
-model = load_model('my_model.h5')
+import time
+
+import multiprocessing
+from multiprocessing import Pool
+
+model = load_model('./model_file_1573620687.335283.h5')
 
 mypath  = "/u/st/da/aoltmanns/Pictures/saltimages/train/images"
 mypath2 = "/u/st/da/aoltmanns/Pictures/saltimages/train/masks"
@@ -62,6 +71,10 @@ for idx,val in enumerate(output_class_list):
 input_array = np.array(input_vector_list)
 output_array = np.array(output_class_list)
 
-prediction = model.predict(input_array)
+prediction_raw = model.predict(input_array)
+prediction = [1.0*(y>0.5) for y in prediction_raw]
 print("abs diff per img")
-print((np.abs(prediction - output_array)))
+for index in range(0,len(output_array)):
+    print(prediction[index] - output_array[index])
+print((np.sum(np.abs(prediction - output_array))))
+print(np.shape(output_array))

@@ -54,7 +54,7 @@ for idx, each_name in enumerate(image_files):
 
     image_list.append(padded_image)
     mask_list.append(padded_mask)
-    if idx > 4000:
+    if idx > 1000:
         break
 
 num_cores = 10#multiprocessing.cpu_count()
@@ -145,20 +145,20 @@ print("Done loading")
 #kernel_input_shape = np.sum(my_kernel)
 kernel_input_shape = kernel_shape[0]*kernel_shape[1]
 layers = [
-    Dense(640,input_shape=(kernel_input_shape,), activation='relu'),
+     Dense(320,input_shape=(kernel_input_shape,), activation='sigmoid'),
     # Dropout(0.3),
-    Dense(640,input_shape=(640,), activation='relu'),
-    # Dropout(0.1),
-    # Dense(640,input_shape=(640,), activation='relu'),
-    Dense(640,input_shape=(640,), activation='relu'),
+#    Dense(640,input_shape=(640,), activation='elu'),
+#    Dropout(0.1),
+     Dense(320,input_shape=(320,), activation='sigmoid'),
+#    Dense(640,input_shape=(640,), activation='elu'),
     #Dense(300,input_shape=(400,), activation='tanh'),
-    #Dense(200,input_shape=(300,), activation='tanh'),
-    Dense(2,input_shape=(64,), activation='softmax'),
+     Dense(320,input_shape=(320,), activation='sigmoid'),
+     Dense(1,input_shape=(320,), activation='sigmoid'),
     #Dense(1,input_shape=(10,), activation='tanh'),
 ]
 model = keras.Sequential(layers)
 
-model.compile(optimizer='adam', loss='mae', metrics=['mae', "mse", "accuracy"])
+model.compile(optimizer='adam', loss='mse', metrics=['mae', "mse", "accuracy"])
 model.fit(x_train, y_train, epochs=5, verbose=1)
 now = datetime. now()
 timestamp = datetime.timestamp(now)
@@ -167,7 +167,8 @@ model.summary()
 print("model saved to :model_file_" + str(timestamp) + ".h5")
 y_pred_float = model.predict(x_test)
 print(y_pred_float)
-y_class_pred = np.argmax(y_pred_float, axis=1)
+y_class_pred = [1.0*(x>0.5) for x in y_pred_float]
+#y_class_pred = np.argmax(y_pred_float, axis=1)
 print("Decided %d salt pixels out of %d total pixels" %
         (np.sum(y_class_pred), len(y_class_pred)))
 print(y_class_pred)
