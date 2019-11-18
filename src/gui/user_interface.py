@@ -22,6 +22,12 @@ def set_filename(name):
 
 def runCNN():
     os.system("python cnn.py %s" % (filename))
+    img = ImageTk.PhotoImage(Image.open(
+        "result.png").resize((200, 200), Image.ANTIALIAS))
+    panel = Label(window, image=img)
+    panel.config(height=200, width=200)
+    panel.photo = img
+    panel.place(x=350, y=60, height=200, width=200)
     return
 
 
