@@ -3,6 +3,7 @@ import os
 from tkinter import *
 import tkFileDialog
 from PIL import Image, ImageTk
+#from cnn import get_data, conv2d_block, get_unet, plot_sample
 
 window = Tk()
 

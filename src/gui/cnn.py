@@ -34,7 +34,7 @@ plt.style.use("ggplot")
 
 
 filename = sys.argv[1]
-print("Running the CNN with the input file" + filename)
+# print("Running the CNN with the input file" + filename)
 
 # Set some parameters
 im_width = 128
@@ -74,7 +74,7 @@ def get_data(path, train=False):
 
 X = get_data(filename, train=False)
 
-print(X)
+# print(X)
 # print(len(y))
 # Split train and valid
 
@@ -86,10 +86,10 @@ print(X)
 ix = random.randint(0, len(X))
 # has_mask = y_train[ix].max() > 0
 
-fig, ax = plt.subplots(1, 2, figsize=(20, 10))
+#fig, ax = plt.subplots(1, 2, figsize=(20, 10))
 
-ax[0].imshow(X[ix, ..., 0], cmap="seismic", interpolation="bilinear")
-ax[0].set_title("Seismic")
+# ax[0].imshow(X[ix, ..., 0], cmap="seismic", interpolation="bilinear")
+# ax[0].set_title("Seismic")
 
 # ax[1].imshow(y_train[ix].squeeze(), interpolation="bilinear", cmap="gray")
 # ax[1].set_title("Salt")
@@ -185,29 +185,6 @@ model = get_unet(input_img, n_filters=16, dropout=0.05, batchnorm=True)
 
 model.compile(optimizer=Adam(), loss="binary_crossentropy",
               metrics=["accuracy"])
-model.summary()
-
-
-# callbacks = [
-#     EarlyStopping(patience=10, verbose=1),
-#     ReduceLROnPlateau(factor=0.1, patience=3, min_lr=0.00001, verbose=1),
-#     ModelCheckpoint('model-tgs-salt.h5', verbose=1, save_best_only=True, save_weights_only=True)
-# ]
-
-
-# results = model.fit(X_train, y_train, batch_size=32, epochs=100, callbacks=callbacks,
-#                     validation_data=(X_valid, y_valid))
-#
-#
-# plt.figure(figsize=(8, 8))
-# plt.title("Learning curve")
-# plt.plot(results.history["loss"], label="loss")
-# plt.plot(results.history["val_loss"], label="val_loss")
-# plt.plot( np.argmin(results.history["val_loss"]), np.min(results.history["val_loss"]), marker="x", color="r", label="best model")
-# plt.xlabel("Epochs")
-# plt.ylabel("log_loss")
-# plt.legend();
-# plt.show()
 
 # Load best model
 model.load_weights("model-tgs-salt.h5")
@@ -228,27 +205,8 @@ preds_train_t = (preds_train > 0.5).astype(np.uint8)
 def plot_sample(X, preds, binary_preds, ix=None):
     if ix is None:
         ix = random.randint(0, len(X))
-
-    fig, ax = plt.subplots(1, 4, figsize=(20, 10))
-    ax[0].imshow(X[ix, ..., 0], cmap="seismic")
-
-    ax[0].set_title("Seismic")
-
-    # ax[1].imshow(y[ix].squeeze())
-    ax[1].set_title("Salt")
-
-    ax[2].imshow(preds[ix].squeeze(), vmin=0, vmax=1)
-    ax[2].set_title("Salt Predicted")
-
-    ax[3].imshow(binary_preds[ix].squeeze(), vmin=0, vmax=1)
-
-    ax[3].set_title("Salt Predicted binary")
-    plt.show()
+    plt.figure(figsize=(20, 10))
+    plt.imsave('result.png', binary_preds[ix].squeeze(), vmin=0, vmax=1)
 
 
-# Check if training data looks all right
 plot_sample(X, preds_train, preds_train_t, ix=0)
-plt.show()
-# Check if valid data looks all right
-# plot_sample(X_valid, y_valid, preds_val, preds_val_t, ix=19)
-# plt.show()
