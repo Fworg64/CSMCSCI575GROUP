@@ -28,20 +28,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 plt.style.use("ggplot")
-# %matplotlib inline
-
-# from tqdm import tqdm_notebook, tnrange
-
 
 filename = sys.argv[1]
-# print("Running the CNN with the input file" + filename)
+
 
 # Set some parameters
 im_width = 128
 im_height = 128
 border = 5
-# path_train = "/Users/Taqi/Desktop/Colorado_courses/cs575/Group_project/TGS/tgs-salt-identification-challenge/train/"
-# path_test = "/Users/Taqi/Desktop/Colorado_courses/cs575/Group_project/TGS/tgs-salt-identification-challenge/images/"
 
 
 # Get and resize train images and masks
@@ -74,26 +68,7 @@ def get_data(path, train=False):
 
 X = get_data(filename, train=False)
 
-# print(X)
-# print(len(y))
-# Split train and valid
-
-# X_train, X_valid, y_train, y_valid = train_test_split(
-#    X, y, test_size=0.15, random_state=2018
-# )
-
-# Check if training data looks all right
 ix = random.randint(0, len(X))
-# has_mask = y_train[ix].max() > 0
-
-#fig, ax = plt.subplots(1, 2, figsize=(20, 10))
-
-# ax[0].imshow(X[ix, ..., 0], cmap="seismic", interpolation="bilinear")
-# ax[0].set_title("Seismic")
-
-# ax[1].imshow(y_train[ix].squeeze(), interpolation="bilinear", cmap="gray")
-# ax[1].set_title("Salt")
-# plt.show()
 
 
 def conv2d_block(input_tensor, n_filters, kernel_size=3, batchnorm=True):
@@ -185,44 +160,15 @@ model = get_unet(input_img, n_filters=16, dropout=0.05, batchnorm=True)
 
 model.compile(optimizer=Adam(), loss="binary_crossentropy",
               metrics=["accuracy"])
-# model.summary()
-
-
-# callbacks = [
-#     EarlyStopping(patience=10, verbose=1),
-#     ReduceLROnPlateau(factor=0.1, patience=3, min_lr=0.00001, verbose=1),
-#     ModelCheckpoint('model-tgs-salt.h5', verbose=1, save_best_only=True, save_weights_only=True)
-# ]
-
-
-# results = model.fit(X_train, y_train, batch_size=32, epochs=100, callbacks=callbacks,
-#                     validation_data=(X_valid, y_valid))
-#
-#
-# plt.figure(figsize=(8, 8))
-# plt.title("Learning curve")
-# plt.plot(results.history["loss"], label="loss")
-# plt.plot(results.history["val_loss"], label="val_loss")
-# plt.plot( np.argmin(results.history["val_loss"]), np.min(results.history["val_loss"]), marker="x", color="r", label="best model")
-# plt.xlabel("Epochs")
-# plt.ylabel("log_loss")
-# plt.legend();
-# plt.show()
 
 # Load best model
 model.load_weights("model-tgs-salt.h5")
 
-# Evaluate on validation set (this must be equals to the best log_loss)
-# model.evaluate(X_valid, y_valid, verbose=1)
-
 # Predict on train, val and test
 preds_train = model.predict(X, verbose=1)
 
-# preds_val = model.predict(X_valid, verbose=1)
-
 # Threshold predictions
 preds_train_t = (preds_train > 0.5).astype(np.uint8)
-# preds_val_t = (preds_val > 0.5).astype(np.uint8)
 
 
 def plot_sample(X, preds, binary_preds, ix=None):
@@ -235,7 +181,3 @@ def plot_sample(X, preds, binary_preds, ix=None):
 
 # Check if training data looks all right
 plot_sample(X, preds_train, preds_train_t, ix=0)
-# plt.show()
-# Check if valid data looks all right
-# plot_sample(X_valid, y_valid, preds_val, preds_val_t, ix=19)
-# plt.show()
