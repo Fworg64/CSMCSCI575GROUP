@@ -3,7 +3,8 @@ import os
 from tkinter import *
 import tkFileDialog
 from PIL import Image, ImageTk
-#from cnn import get_data, conv2d_block, get_unet, plot_sample
+
+# from cnn import get_data, conv2d_block, get_unet, plot_sample
 
 window = Tk()
 window.title("Mushroom ML GUI")
@@ -27,9 +28,7 @@ def set_modelname(name):
 
 
 def browseModelFunc():
-    name = tkFileDialog.askopenfilename(
-        filetypes=[("PYTHON FILES", "*.py")]
-    )
+    name = tkFileDialog.askopenfilename(filetypes=[("PYTHON FILES", "*.py")])
     set_modelname(name)
     model_field.insert(0, name)
     return
@@ -41,8 +40,7 @@ def browsefunc():
     )
     set_filename(name)
     file_field.insert(0, name)
-    img = ImageTk.PhotoImage(Image.open(
-        filename).resize((200, 200), Image.ANTIALIAS))
+    img = ImageTk.PhotoImage(Image.open(filename).resize((200, 200), Image.ANTIALIAS))
     panel = Label(window, image=img)
     panel.config(height=200, width=200)
     panel.photo = img
@@ -57,8 +55,9 @@ def runCNN():
 
 
 def showResult():
-    img = ImageTk.PhotoImage(Image.open(
-        "result.png").resize((200, 200), Image.ANTIALIAS))
+    img = ImageTk.PhotoImage(
+        Image.open("result.png").resize((200, 200), Image.ANTIALIAS)
+    )
     panel = Label(window, image=img)
     panel.config(height=200, width=200)
     panel.photo = img
@@ -67,8 +66,7 @@ def showResult():
 
 
 def showInput():
-    img = ImageTk.PhotoImage(Image.open(
-        filename).resize((200, 200), Image.ANTIALIAS))
+    img = ImageTk.PhotoImage(Image.open(filename).resize((200, 200), Image.ANTIALIAS))
     panel = Label(window, image=img)
     panel.config(height=200, width=200)
     panel.photo = img
@@ -77,14 +75,16 @@ def showInput():
 
 
 def runFFN():
-    os.system("python FFN.py %s" % (filename))
+    os.system(
+        "python generate_mask.py %s model_file_1574062836.89172.h5 0.2" % (filename)
+    )
     showResult()
     return
 
 
 def runCustom():
     os.system("python" + " " + modelname + " " + "%s" % (filename))
-    if (modelname == ""):
+    if modelname == "":
         print("No File Found")
     else:
         showResult()
@@ -92,7 +92,7 @@ def runCustom():
 
 
 def toggle():
-    if toggle_btn.config('relief')[-1] == 'sunken':
+    if toggle_btn.config("relief")[-1] == "sunken":
         toggle_btn.config(relief="raised")
         showResult()
     else:
@@ -108,8 +108,7 @@ Input = Label(window, text="Generated Mask", bg="light green")
 Input.place(x=420, y=20)
 
 # create toggle button
-toggle_btn = Button(text="Show Mask", width=12,
-                    relief="raised", command=toggle)
+toggle_btn = Button(text="Show Mask", width=12, relief="raised", command=toggle)
 toggle_btn.place(x=400, y=260)
 
 # create Upload File Section
@@ -135,7 +134,7 @@ algorithm = Label(window, text="Algorithm", bg="light green")
 algorithm.place(x=20, y=500)
 cnn_btn = Button(window, text="CNN", bg="black", command=runCNN)
 cnn_btn.place(x=150, y=500, width=120, height=25)
-ffn_btn = Button(window, text="FFN", bg="black", command=runFFN)
+ffn_btn = Button(window, text="FFNN", bg="black", command=runFFN)
 ffn_btn.place(x=300, y=500, width=120, height=25)
 custom_btn = Button(window, text="Custom", bg="black", command=runCustom)
 custom_btn.place(x=450, y=500, width=120, height=25)
