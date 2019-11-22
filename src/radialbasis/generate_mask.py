@@ -9,11 +9,16 @@ from tensorflow.keras.layers import Dense, Dropout, Activation
 from datetime import datetime
 from sklearn.metrics import matthews_corrcoef
 
-import multiprocessing
-from multiprocessing import Pool
+from tensorflow.keras.models import load_model
+
+#import multiprocessing
+#from multiprocessing import Pool
 
 import time
 import sys
+
+from PIL import Image
+import struct
 
 # Load images and run function
 image_list = []
@@ -28,12 +33,12 @@ image_files = [sys.argv[1]]
 
 for idx, each_name in enumerate(image_files):
     print(each_name, end="  ")
-    image = cv2.imread(mypath  + '/' + each_name)
-    mask  = cv2.imread(mypath2 + '/' + each_name)
+    image = cv2.imread(each_name)
+    #mask  = cv2.imread(mypath2 + '/' + each_name)
     # extend image by kernal_width/2
 
     padded_image = np.pad(image[:,:,0], offset, "symmetric")
-    padded_mask  = np.pad(mask[:,:,0], offset, "symmetric")
+    #padded_mask  = np.pad(mask[:,:,0], offset, "symmetric")
 
     image_list.append(padded_image)
     #mask_list.append(padded_mask)
@@ -96,7 +101,7 @@ if len(sys.argv[2]) > 3:
   model = load_model(sys.argv[2])
 else:
   print("Please provide model file as second argument")
-  uh-oh = 4.0 / 0.0
+  uh_oh = 4.0 / 0.0
 
 #model.compile(optimizer='adam', loss='binary_crossentropy', metrics=[
 #              "mse","mae", "binary_accuracy"])
@@ -109,8 +114,23 @@ timestamp = datetime.timestamp(now)
 #print("model saved to :model_file_" + str(timestamp) + ".h5")
 y_pred_float = model.predict(feature_data)
 print(y_pred_float)
-my_threshold = 0.8
+if len(sys.argv) > 2:
+  my_threshold = float(sys.argv[3])
+else:
+  my_threshold = 0.5
+print("Using Threshhold of %.2f" % my_threshold)
 y_class_pred = [1.0*(x>my_threshold) for x in y_pred_float]
+
+
+size = 101, 101
+data = struct.pack('B'*len(y_class_pred), *[int(pixel)*255 for pixel in y_class_pred])
+img = Image.frombuffer('L', size, data)
+img = img.transpose(Image.FLIP_TOP_BOTTOM)
+image_name = "result.png"
+img.save(image_name)
+print("Image saved to %s !" % image_name)
+
+
 #bin_acc = keras.metrics.binary_accuracy(y_test, y_pred_float, threshold=my_threshold)
 #y_class_pred = np.argmax(y_pred_float, axis=1)
 #print("Decided %d salt pixels out of %d total pixels with %d true salt" %
